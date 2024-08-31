@@ -1,0 +1,62 @@
+[
+  {
+    "name": "url",
+    "type": "string"
+  },
+  {
+    "name": "campaignId",
+    "type": "uint256"
+  },
+  {
+    "name": "socialNetworkId",
+    "type": "uint256"
+  },
+  {
+    "name": "code",
+    "type": "string"
+  },
+  {
+    "name": "wallet",
+    "type": "address"
+  },
+  {
+    "name": "positive",
+    "type": "uint256"
+  },
+  {
+    "name": "negative",
+    "type": "uint256"
+  },
+  {
+    "name": "semantic",
+    "type": "uint256"
+  },
+  {
+    "name": "content",
+    "type": "string"
+  },
+  {
+    "name": "created",
+    "type": "uint256"
+  },
+  {
+    "name": "updated",
+    "type": "uint256"
+  },
+  {
+    "name": "followers",
+    "type": "uint256"
+  },
+  {
+    "name": "tags",
+    "type": "string[]"
+  },
+  {
+    "name": "links",
+    "type": "string[]"
+  },
+  {
+    "name": "flags",
+    "type": "uint256"
+  }
+]

@@ -1,0 +1,41 @@
+{
+  "name": "@ethsign/sign-protocol-evm",
+  "version": "1.1.1",
+  "description": "Sign Protocol is an omni-chain attestation protocol, enabling users to freely attest and verify any information on-chain.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EthSign/sign-protocol-evm"
+  },
+  "scripts": {
+    "clean": "forge clean && hardhat clean && rm -rf cache_hardhat",
+    "build": "forge build",
+    "build:hh": "hardhat compile",
+    "lint:sol": "forge fmt --check && solhint {script,src,test}/**/*.sol",
+    "prettier:check": "prettier --check **/*.{json,md,yml} --ignore-path=.prettierignore",
+    "prettier:write": "prettier --write **/*.{json,md,yml} --ignore-path=.prettierignore",
+    "test": "forge test",
+    "test:coverage": "forge coverage"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "5.0.1",
+    "@openzeppelin/contracts-upgradeable": "5.0.1"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-foundry": "^1.1.1",
+    "@nomicfoundation/hardhat-verify": "^2.0.8",
+    "@openzeppelin/hardhat-upgrades": "^3.2.0",
+    "@types/node": ">=16.0.0",
+    "ethers": "^6.11.1",
+    "dotenv": "^16.3.1",
+    "ds-test": "github:dapphub/ds-test",
+    "forge-std": "github:foundry-rs/forge-std#v1",
+    "hardhat": "^2.22.5",
+    "hardhat-deploy": "^0.12.4",
+    "prettier": "^3.2.1",
+    "solhint": "^4.1.1",
+    "ts-node": ">=8.0.0",
+    "typescript": "~5.0.4"
+  }
+}

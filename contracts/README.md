@@ -4,7 +4,10 @@
 
 | Chain | Contract | Address |
 |-|-|-|
-TBD
+BASE | TransparentUpgradeableProxy | 0x8596F5C5d410bb956Bf8dC3F07c3985721e1a976
+BASE | ProxyAdmin |   0x32C8123714e0235456a72Cce8DD1e3eC2f405869
+BASE | Hook impl v1 | 0x52EFc6195524B39CB32176c86a2aEd6087B94974
+BASE | Hook impl v2 | 0x942651bec37ac538e1F8962912F5C621933A7bFE
 
 ## Foundry
 
