@@ -1,4 +1,4 @@
-import CAMPAIGNS from "../data/sample/campaigns.json"
+import CAMPAIGNS from "./data/sample/campaigns.json"
 
 const API_BASE_URL = process.env.REACT_APP_BACK_URL || "http://localhost:8000"
 
@@ -30,6 +30,6 @@ async function post(path, data) {
   return result
 }
 
-async function getCampaigns() {
+export async function getCampaigns() {
   return CAMPAIGNS
 }
