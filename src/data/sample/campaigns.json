@@ -1,0 +1,60 @@
+[
+  {
+    "id": 1,
+    "title": "Amazing New Smartphone",
+    "owner": "0x34f7c9b012345abc5678de9012345678abcd1234",
+    "start": null,
+    "finish": null,
+    "postRequirements": {
+      "text": "Write any positive comment about Amazing New Smartphone",
+      "link": "https://yourlink.com/#x1313",
+      "tag": "#AmazingSmartphone"
+    },
+    "bloggerRequirements": {
+      "minFollowers": 2,
+      "favoriteTopic": null,
+      "postMinTimeToLive": 86400
+    },
+    "paymentDetails": {
+      "token": {
+        "address": "0x12a4f8b901234abcd5678ef9012345678abcdef12",
+        "symbol": "USDT",
+        "decimals": 6
+      },
+      "paymentPerPost": 100,
+      "maxPosts": 100,
+      "totalSupply": 100,
+      "lockedSupply": 20,
+      "claimedSupply": 30
+    }
+  },
+  {
+    "id": 2,
+    "title": "Amazing New Smartphone",
+    "owner": "0x34f7c9b012345abc5678de9012345678abcd1234",
+    "start": null,
+    "finish": null,
+    "postRequirements": {
+      "text": "Write any positive comment about Amazing New Smartphone",
+      "link": "https://yourlink.com/#x1313",
+      "tag": "#AmazingSmartphone"
+    },
+    "bloggerRequirements": {
+      "minFollowers": 2,
+      "favoriteTopic": null,
+      "postMinTimeToLive": 86400
+    },
+    "paymentDetails": {
+      "token": {
+        "address": "0x12a4f8b901234abcd5678ef9012345678abcdef12",
+        "symbol": "USDT",
+        "decimals": 6
+      },
+      "paymentPerPost": 100,
+      "maxPosts": 100,
+      "totalSupply": 100,
+      "lockedSupply": 20,
+      "claimedSupply": 30
+    }
+  }
+]
