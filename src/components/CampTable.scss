@@ -1,0 +1,35 @@
+.camp-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.camp-header, .camp-row {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.camp-cell {
+  flex: 1;
+  padding: 5px;
+  text-align: left;
+}
+
+.camp-header {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+.camp-row {
+  transition: background-color 0.2s ease;
+}
+
+.camp-row:hover {
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+  .camp-cell {
+    font-size: 14px;
+  }
+}
