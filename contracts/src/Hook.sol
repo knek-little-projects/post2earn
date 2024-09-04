@@ -2,17 +2,26 @@ import "lib/sign-protocol-evm/src/interfaces/ISPHook.sol";
 import "lib/sign-protocol-evm/src/interfaces/ISP.sol";
 import "lib/sign-protocol-evm/src/models/DataLocation.sol";
 
-contract Hook is ISPHook {
+import "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
+
+contract Hook is ISPHook, OwnableUpgradeable {
     event HookCalled(address sender, address attester, uint64 schemaId, uint64 attestationId);
 
-    ISP immutable public sp = ISP(0x2b3224D080452276a76690341e5Cfa81A945a985);
+    ISP public immutable sp = ISP(0x2b3224D080452276a76690341e5Cfa81A945a985);
     uint64 public schemaId;
 
-    
-    constructor(uint64 _schemaId) {
-        schemaId = _schemaId;
+    constructor() {
+        _disableInitializers();
     }
-    
+
+    function initialize(address owner) initializer public {
+        __Ownable_init(owner);
+    }
+
+    function setSchemaId(uint64 id) external onlyOwner {
+        schemaId = id;
+    }
+ 
     function attest() external {
         Attestation memory sample = Attestation({
             schemaId: schemaId,
@@ -26,7 +35,7 @@ contract Hook is ISPHook {
             recipients: new bytes[](0),
             data: ""
         });
-
+        sp.attest(sample, "", "", "");
     }
 
     function didReceiveAttestation(

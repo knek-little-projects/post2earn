@@ -17,25 +17,24 @@ contract TestIspScript is Script {
         address initialOwner = vm.envAddress("OWNER");
         require(initialOwner != address(0));
 
-        // vm.startBroadcast();
+        vm.startBroadcast();
 
         // Deploy the logic contract (Counter)
-        // impl = address(new Hook());
+        impl = address(new Hook());
 
-        // // Deploy the ProxyAdmin
-        // proxyAdmin = new ProxyAdmin(initialOwner);
+        // Deploy the ProxyAdmin
+        proxyAdmin = new ProxyAdmin(initialOwner);
 
-        // // Encode the initialization call
-        // // bytes memory data = abi.encodeWithSelector(TestISP.initialize.selector);
-        // bytes memory data = "";
+        // Encode the initialization call
+        bytes memory data = abi.encodeWithSelector(Hook.initialize.selector, initialOwner);
 
-        // // Deploy the TransparentUpgradeableProxy
-        // proxy = new TransparentUpgradeableProxy(
-        //     address(impl),
-        //     address(proxyAdmin),
-        //     data
-        // );
+        // Deploy the TransparentUpgradeableProxy
+        proxy = new TransparentUpgradeableProxy(
+            address(impl),
+            address(proxyAdmin),
+            data
+        );
 
-        // vm.stopBroadcast();
+        vm.stopBroadcast();
     }
 }
