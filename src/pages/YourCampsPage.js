@@ -1,3 +1,3 @@
 export default function () {
-    return <>your camps</>   
-  }
+  return <>your camps</>
+}

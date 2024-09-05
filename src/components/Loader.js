@@ -1,6 +1,7 @@
 export default function ({
   loading,
   error,
+  data,
   children,
 }) {
   return (
@@ -15,9 +16,13 @@ export default function ({
           &&
           <div>Error: {"" + error}</div>
           ||
-          <>
-            {children}
-          </>
+          (
+            data
+            &&
+            <>
+              {children}
+            </>
+          )
         )
       }
     </>

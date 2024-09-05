@@ -1,4 +1,5 @@
 import CAMPAIGNS from "./data/sample/campaigns.json"
+import PROFILE from "./data/sample/profile.json"
 
 const API_BASE_URL = process.env.REACT_APP_BACK_URL || "http://localhost:8000"
 
@@ -32,4 +33,12 @@ async function post(path, data) {
 
 export async function getCampaigns() {
   return CAMPAIGNS
+}
+
+export function getCampaign(id) {
+  return CAMPAIGNS.find(c => c.id == /** approx */ id)
+}
+
+export function getProfile() {
+  return PROFILE
 }

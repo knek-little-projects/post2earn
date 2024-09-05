@@ -8,6 +8,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import AllCampsPage from './pages/AllCampsPage'
 import YourCampsPage from './pages/YourCampsPage'
 import YourPostsPage from './pages/YourPostsPage'
+import CampPage from './pages/CampPage'
 
 export default function App() {
   return (
@@ -17,8 +18,8 @@ export default function App() {
           <Route path="/" element={<Navigate to="/campaigns/" />} />
           <Route path="/campaigns" element={<Navigate to="/campaigns/" />} />
           <Route path="/campaigns/" element={<AllCampsPage />} />
-          <Route path="/campaigns/:addr" element={<YourCampsPage />} />
-          <Route path="/posts/:addr" element={<YourPostsPage />} />
+          <Route path="/campaigns/:id" element={<CampPage />} />
+          <Route path="/posts/:id" element={<YourPostsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
