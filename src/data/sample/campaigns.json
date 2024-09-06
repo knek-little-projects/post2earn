@@ -5,6 +5,7 @@
     "owner": "0x34f7c9b012345abc5678de9012345678abcd1234",
     "start": null,
     "finish": null,
+    "stopped": 10100241,
     "postRequirements": {
       "text": "Write any positive comment about Amazing New Smartphone",
       "link": "https://yourlink.com/#x1313",
@@ -34,6 +35,7 @@
     "owner": "0x34f7c9b012345abc5678de9012345678abcd1234",
     "start": null,
     "finish": null,
+    "stopped": null,
     "postRequirements": {
       "text": "Write any positive comment about Amazing New Smartphone",
       "link": "https://yourlink.com/#x1313",
