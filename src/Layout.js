@@ -6,8 +6,8 @@ export default function ({ children }) {
       <div>
         <ul>
           <li><Link to="/campaigns/">All Campaigns</Link></li>
-          <li><Link to="/campaigns/addr">Your Campaigns</Link></li>
-          <li><Link to="/posts/addr">Your Posts</Link></li>
+          <li><Link to="/u/addr/campaigns">Your Campaigns</Link></li>
+          <li><Link to="/u/addr/posts">Your Posts</Link></li>
         </ul>
       </div>
       {children}

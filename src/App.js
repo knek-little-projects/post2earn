@@ -9,6 +9,7 @@ import AllCampsPage from './pages/AllCampsPage'
 import YourCampsPage from './pages/YourCampsPage'
 import YourPostsPage from './pages/YourPostsPage'
 import CampPage from './pages/CampPage'
+import PostPage from './pages/PostPage'
 
 export default function App() {
   return (
@@ -19,7 +20,11 @@ export default function App() {
           <Route path="/campaigns" element={<Navigate to="/campaigns/" />} />
           <Route path="/campaigns/" element={<AllCampsPage />} />
           <Route path="/campaigns/:id" element={<CampPage />} />
-          <Route path="/posts/:id" element={<YourPostsPage />} />
+          <Route path="/posts/:id" element={<PostPage />} />
+          <Route path="/u/:id/campaigns" element={<YourCampsPage />} />
+          <Route path="/u/:id/campaigns/" element={<YourCampsPage />} />
+          <Route path="/u/:id/posts" element={<YourPostsPage />} />
+          <Route path="/u/:id/posts/" element={<YourPostsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
