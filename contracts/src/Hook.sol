@@ -23,8 +23,13 @@ contract Hook is ISPHook, OwnableUpgradeable, PausableUpgradeable {
     mapping(uint => Campaign) campaigns;
     uint public totalCampaigns;
 
-    mapping(address blogger => mapping(uint campaignId => BlogPost)) posts;
-    uint public totalPosts;
+    mapping(uint => BlogPost) posts;
+    uint public lastPostId;
+
+    uint[] queue;
+    uint queueHead;
+
+    mapping(address blogger => mapping(uint campaignId => uint postId)) postMap;
 
     modifier onlyCampaignOwner(uint campaignId) {
         require(campaigns[campaignId].started > 0, "I");
@@ -33,8 +38,8 @@ contract Hook is ISPHook, OwnableUpgradeable, PausableUpgradeable {
     }
 
     modifier onlyPostOwner(uint campaignId) {
-        require(posts[msg.sender][campaignId].status != PostStatus.NOT_INITIALIZED, "I");
-        require(posts[msg.sender][campaignId].owner == msg.sender, "O");
+        require(posts[postMap[msg.sender][campaignId]].status != PostStatus.NOT_INITIALIZED, "I");
+        require(posts[postMap[msg.sender][campaignId]].owner == msg.sender, "O");
         _;
     }
 
@@ -96,7 +101,9 @@ contract Hook is ISPHook, OwnableUpgradeable, PausableUpgradeable {
     //     sp.attest(sample, "", "", "");
     // }
 
-    function startCampaign(CampaignDescription calldata desc) external whenNotPaused returns (uint campaignId) {
+    function startCampaign(
+        CampaignDescription calldata desc
+    ) external whenNotPaused returns (uint campaignId) {
         // TODO: review campaign
 
         if (address(desc.token) != address(0)) {
@@ -136,18 +143,22 @@ contract Hook is ISPHook, OwnableUpgradeable, PausableUpgradeable {
         require(camp.started > 0, "S");
         require(camp.finished == 0, "F");
         require(camp.countFreeSlots() > 0, "L");
-        require(posts[msg.sender][campaignId].status == PostStatus.NOT_INITIALIZED, "B");
+        require(postMap[msg.sender][campaignId] == 0, "I");
 
-        BlogPost storage post = posts[msg.sender][campaignId];
+        uint postId = ++lastPostId;
+        BlogPost storage post = posts[postId];
         post.status = PostStatus.BOOKED;
         post.bookingExpires = camp.bookingSchedule.schedule();
         post.owner = msg.sender;
         post.socialId = 0;
-        post.postId = totalPosts++;
+        post.postId = postId;
     }
 
-    function post(uint campaignId, string calldata postUrl) external whenNotPaused onlyPostOwner(campaignId) {
-        BlogPost storage post = posts[msg.sender][campaignId];
+    function post(
+        uint campaignId,
+        string calldata postUrl
+    ) external whenNotPaused onlyPostOwner(campaignId) {
+        BlogPost storage post = posts[postMap[msg.sender][campaignId]];
         require(post.status == PostStatus.BOOKED, "B");
         require(block.timestamp < post.bookingExpires, "E");
 
@@ -155,9 +166,19 @@ contract Hook is ISPHook, OwnableUpgradeable, PausableUpgradeable {
         camp.bookingSchedule.unschedule(post.bookingExpires);
         delete post.bookingExpires;
         camp.pipelinesInProgress++;
-        
+
         post.status = PostStatus.READY_FOR_ATTESTATION;
         post.postUrl = postUrl;
+        post.campaignId = campaignId;
+
+        queue.push(post.postId);
+    }
+
+    function nextInQueue() external view returns (Campaign memory camp, BlogPost memory post) {
+        require(queueHead < queue.length, "E");
+
+        post = posts[queue[queueHead]];
+        camp = campaigns[post.campaignId];
     }
 
     function pause() external onlyOwner {
@@ -168,11 +189,24 @@ contract Hook is ISPHook, OwnableUpgradeable, PausableUpgradeable {
         _unpause();
     }
 
-    function postNotOK(address blogger, uint campaignId, string calldata reason) external onlyOwner {
+    function firstCheckFromQueue(uint postId, uint timestamp, bool ok) external onlyOwner {
+        require(postId == queue[queueHead], "Q");
+        queueHead++;
 
-    }
+        BlogPost storage post = posts[postId];
+        require(post.status == PostStatus.READY_FOR_ATTESTATION, "A");
 
-    function postOK(address blogger, uint campaignId, uint timestamp) external onlyOwner {
+        if (ok) {
+            // attest ok
+            post.status = PostStatus.FIRST_CHECK_PASSED;
+            post.firstSeen = timestamp;
+        } else {
+            // fail
+            post.status = PostStatus.FAILED;
+            campaigns[post.campaignId].pipelinesInProgress--;
+        }
+
+        // TODO:
         // BlogPost storage post = posts[blogger][campaignId];
         //         Attestation memory sample = Attestation({
         //     schemaId: schemaId,
@@ -189,8 +223,32 @@ contract Hook is ISPHook, OwnableUpgradeable, PausableUpgradeable {
         // sp.attest(sample, "", "", "");
     }
 
-    function claim(uint campaignId) external onlyPostOwner(campaignId) {
-        //
+    function lastCheck(uint postId, uint timestamp, bool ok) external onlyOwner {
+        BlogPost storage post = posts[postId];
+        require(post.status == PostStatus.FIRST_CHECK_PASSED, "A");
+
+        if (ok) {
+            // attest ok
+            post.status = PostStatus.LAST_CHECK_PASSED;
+            post.lastSeen = timestamp;
+            campaigns[post.campaignId].pipelinesInProgress--;
+            campaigns[post.campaignId].pipelinesFinished++;
+        } else {
+            // fail
+            post.status = PostStatus.FAILED;
+            campaigns[post.campaignId].pipelinesInProgress--;
+        }
+    }
+
+    function claim(uint campaignId) external whenNotPaused onlyPostOwner(campaignId) {
+        Campaign storage camp = campaigns[campaignId];
+        require(camp.started > 0, "E");
+
+        BlogPost storage post = posts[postMap[msg.sender][campaignId]];
+        require(post.status == PostStatus.LAST_CHECK_PASSED, "A");
+
+        post.status = PostStatus.CLAIMED;
+        camp.description.token.safeTransfer(post.owner, camp.description.paymentPerPost);
     }
 
     function didReceiveAttestation(

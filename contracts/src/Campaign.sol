@@ -110,6 +110,7 @@ enum PostStatus {
     READY_FOR_ATTESTATION,
     FIRST_CHECK_PASSED,
     LAST_CHECK_PASSED,
+    CLAIMED,
     FAILED
 }
 
@@ -119,6 +120,7 @@ struct BlogPost {
     address owner;
     uint socialId;
     uint postId;
+    uint campaignId;
     string postUrl;
     uint firstSeen;
     uint lastSeen;
